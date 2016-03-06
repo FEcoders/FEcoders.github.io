@@ -1,0 +1,115 @@
+@CHARSET "ISO-8859-1";
+/* Reset CSS
+ * --------------------------------------- */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,
+form,fieldset,input,textarea,p,blockquote,th,td {
+    padding: 0;
+    margin: 0;
+}
+a{
+    text-decoration:none;
+    color: #FFF;
+}
+table {
+    border-spacing: 0;
+}
+fieldset,img {
+    border: 0;
+}
+address,caption,cite,code,dfn,em,strong,th,var {
+    font-weight: normal;
+    font-style: normal;
+}
+strong{
+    font-weight: bold;
+}
+ol,ul {
+    list-style: none;
+    margin:0;
+    padding:0;
+}
+caption,th {
+    text-align: left;
+
+}
+h1,h2,h3,h4,h5,h6 {
+    font-weight: normal;
+    font-size: 100%;
+    margin:0;
+    padding:0;
+    color:#444;
+}
+q:before,q:after {
+    content:'';
+}
+abbr,acronym { border: 0;
+}
+
+
+/* normal CSS
+ * --------------------------------------- */
+
+
+html {font-size: 14px;} /* 1rem = 14px */
+body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+    color: rgba(0,0,0,0.5);
+}
+
+#social {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+    z-index: 70;
+    color: #FFF;
+}
+
+.section1{
+    background-color: #1BBC9B;
+}
+.section1 h1,h2 {
+    width: 100%;
+    text-align: center;
+}
+.section1 h1 {font-size: 6rem;}
+.section1 h2 {font-size: 1rem;}
+
+.section2 {
+    background-color: #BFDA00;
+}
+.section3{
+    background-color: #2C3E50;
+}
+.section4{
+    background-color: #FF9900;
+}
+
+#menu { 
+    margin: 0; 
+    padding: 0; 
+    position: fixed; 
+    left: 10px;
+    top: 10px; 
+    list-style-type: none; 
+    z-index: 70;
+}
+#menu li { 
+    float: left; 
+    margin:  0 10px 0 0; 
+    font-size: 14px;
+}
+#menu a { 
+    float: left; 
+    padding: 10px 20px; 
+    border-radius: 5px;
+    background-color: #fff;
+    opacity: .7; 
+    color: #333; 
+    text-decoration: none;
+}
+#menu .active a { 
+    color: #fff; 
+    background-color: #333;
+}
