@@ -65,27 +65,12 @@ body {
     z-index: 70;
     color: #FFF;
 }
-
-.section1{
-    background-color: #1BBC9B;
-}
 .section1 h1,h2 {
     width: 100%;
     text-align: center;
 }
 .section1 h1 {font-size: 6rem;}
 .section1 h2 {font-size: 1rem;}
-
-.section2 {
-    background-color: #BFDA00;
-}
-.section3{
-    background-color: #2C3E50;
-}
-.section4{
-    background-color: #FF9900;
-}
-
 #menu { 
     margin: 0; 
     padding: 0; 
