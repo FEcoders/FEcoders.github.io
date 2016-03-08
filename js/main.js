@@ -2,11 +2,12 @@
 $(document).ready(function() {
     //配置
     var configure = {
-        color : ["#1BBC9B","#4BBFC3","#2C3E50","#FF9900"]  //每屏的颜色
+        color : ["#1BBC9B","#BFDA00","#2C3E50","#FF9900"] //每屏的颜色
     };
     var arrow = $("#next");
-    //获取屏幕宽度
-    var sWidth = $(window).width();
+    //获取屏幕宽度和高度
+    var sWidth = $(window).width(),
+        sHeight = $(window).height();
     var next = $("#next"),
         FEC1 = $(".section1 .FEC1"),
         FEC2 = $(".section1 .FEC2"),
@@ -22,13 +23,13 @@ $(document).ready(function() {
         content1RightS = $(".content1-right-s0");
     //初始化隐藏文字
     hideCon();
-    setTimeout(delayFEC2,2000);
     clickNext();
     //函数部分
     //初始化隐藏文字
     function hideCon(){
         content1Left.css("left",-sWidth/2+"px");
         content1Right.css("right",-sWidth/2-100+"px");
+        FEC2.css("top",sHeight/2+"px")
     }
     //移除第一屏文字动画
     function removeClass(){
@@ -40,6 +41,7 @@ $(document).ready(function() {
         content1RightE.removeClass("content1-right-e");
         content1RightR.removeClass("content1-right-r");
         content1RightS.removeClass("content1-right-s");
+        FEC2.removeClass("content1-h2-FEC2");
     }
     //添加第一屏文字动画
     function addClass(){
@@ -51,14 +53,7 @@ $(document).ready(function() {
         content1RightE.addClass("content1-right-e");
         content1RightR.addClass("content1-right-r");
         content1RightS.addClass("content1-right-s");
-    }
-    //设置小标题延时出现
-    function delayFEC2(){
-        FEC2.css("display","block")
-    }
-    //隐藏小标题
-    function hideFEC2(){
-        FEC2.css("display","none")
+        FEC2.addClass("content1-h2-FEC2");
     }
     //点击箭头，转到下一页
     function clickNext(){
@@ -68,7 +63,6 @@ $(document).ready(function() {
                 page = "#page1"
             }
             var nextPage = parseInt(page.replace(/[^0-9]/ig,""))+1;
-            console.log(nextPage)
             location.href="#page"+nextPage;//正则当前锚点数字，点击链接下一锚点
         })
     }
@@ -89,9 +83,6 @@ $(document).ready(function() {
         next.find(".about .social a").addClass("aAfter");
         curr.find(".about .social a").removeClass("aAfter");
     }
-
-
-
     $('#fullpage').fullpage({
         //循环演示
         continuousVertical: true,
@@ -117,11 +108,9 @@ $(document).ready(function() {
             }
             if(index == 1){
                 setTimeout(removeClass,700);
-                setTimeout(hideFEC2,700);
             }
             if(nextIndex == 1){
                 addClass();
-                setTimeout(delayFEC2,2000);
             }
         },
         
@@ -144,7 +133,8 @@ $(document).ready(function() {
             if(anchorLink == 'page2'){
                 animatePlay.call(this, next, curr);
             }
-        }
+            }
+
     });
 
     //改变颜色
