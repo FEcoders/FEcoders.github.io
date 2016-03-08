@@ -73,23 +73,21 @@ $(document).ready(function() {
         })
     }
 
-    function animatePlay(next, curr) {
+    function animateAdd(next) {
         next.find(".about img").addClass("imgAfter");
-        curr.find(".about img").removeClass("imgAfter");
-
         next.find(".about .info h2,h3").addClass("hAfter");
-        curr.find(".about .info h2,h3").removeClass("hAfter");
-
         next.find(".about .info p").addClass("pAfter");
-        curr.find(".about .info p").removeClass("pAfter");
-
         next.find(".about .social").addClass("socialAfter");
-        curr.find(".about .social").removeClass("socialAfter");
-
         next.find(".about .social a").addClass("aAfter");
-        curr.find(".about .social a").removeClass("aAfter");
     }
 
+    function animateRemove(curr) {
+        curr.find(".about img").removeClass("imgAfter");
+        curr.find(".about .info h2,h3").removeClass("hAfter");
+        curr.find(".about .info p").removeClass("pAfter");
+        curr.find(".about .social").removeClass("socialAfter");
+        curr.find(".about .social a").removeClass("aAfter");
+    }
 
 
     $('#fullpage').fullpage({
@@ -124,16 +122,11 @@ $(document).ready(function() {
                 setTimeout(delayFEC2,2000);
             }
         },
-        
+
         //about页面初始化动画效果
         afterLoad: function(anchorLink, index){
            if (index == 2) {
-                var currSlide = $(".slide1");
-                currSlide.find(".about img").addClass("imgAfter");
-                currSlide.find(".about .info h2,h3").addClass("hAfter");
-                currSlide.find(".about .info p").addClass("pAfter");
-                currSlide.find(".about .social").addClass("socialAfter");
-                currSlide.find(".about .social a").addClass("aAfter");
+                animateAdd.call(this, $(".slide1"));
             }
         },
 
@@ -142,11 +135,11 @@ $(document).ready(function() {
             var next = $(".slide" + (nextSlideIndex+1)),
                 curr = $(".slide" + (slideIndex+1));
             if(anchorLink == 'page2'){
-                animatePlay.call(this, next, curr);
+                    animateRemove.call(this, curr);
+                    animateAdd.call(this, next);
             }
         }
     });
-
     //改变颜色
     function colorChange(col){
         $('.section').animate({
