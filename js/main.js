@@ -78,13 +78,17 @@ $(document).ready(function() {
     function clickNext(){
         next.click(function(){
             var page = window.location.hash;
-            if(page == ""){
-                page = "#page1"
+            if(page == "" || page == "#page1"){
+                page = 1
+            }else if (page == "#page2" || page == "#page2/1" || page == "#page2/2" || page == "#page2/3"){
+                page = 2
+            }else if (page == "#page3"){
+                page = 3
+            }else {
+                page = 4
             }
-
-            var page = parseInt(page.replace(/[^0-9]/ig,""));
+            //var page = parseInt(page.replace(/[^0-9]/ig,""));
             var nextPage = (page==4)?1:page+1;
-
             location.href="#page"+nextPage;//正则当前锚点数字，点击链接下一锚点
         })
     }
