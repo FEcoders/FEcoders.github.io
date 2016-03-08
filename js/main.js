@@ -2,7 +2,7 @@
 $(document).ready(function() {
     //配置
     var configure = {
-        color : ["#1BBC9B","#BFDA00","#2C3E50","#FF9900"] //每屏的颜色
+        color : ["#1BBC9B","#4BBFC3","#2C3E50","#FF9900"] //每屏的颜色
 
     };
 
@@ -154,7 +154,7 @@ $(document).ready(function() {
                     animateRemove.call(this, curr);
                     animateAdd.call(this, next);
             }
-
+        }
     });
     //改变颜色
     function colorChange(col){
