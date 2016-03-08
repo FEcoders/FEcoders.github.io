@@ -2,8 +2,8 @@
 $(document).ready(function() {
     //配置
     var configure = {
+        color : ["#1BBC9B","#BFDA00","#2C3E50","#FF9900"] //每屏的颜色
 
-        color : ["#1BBC9B","#4BBFC3","#2C3E50","#FF9900"]  //每屏的颜色
     };
 
     var arrow = $("#next");
@@ -26,6 +26,7 @@ $(document).ready(function() {
         content1RightS = $(".content1-right-s0");
     //初始化隐藏文字
     hideCon();
+
     setTimeout(delayFEC2,2000);
 
     clickNext();
@@ -37,6 +38,7 @@ $(document).ready(function() {
 
         FEC2.css("top",sHeight/2+"px")
 
+        FEC2.css("top",sHeight/2+"px")
     }
     //移除第一屏文字动画
     function removeClass(){
@@ -70,7 +72,6 @@ $(document).ready(function() {
     //隐藏小标题
     function hideFEC2(){
         FEC2.css("display","none")
-
         FEC2.addClass("content1-h2-FEC2");
     }
     //点击箭头，转到下一页
@@ -80,8 +81,10 @@ $(document).ready(function() {
             if(page == ""){
                 page = "#page1"
             }
-            var nextPage = parseInt(page.replace(/[^0-9]/ig,""))+1;
-            console.log(nextPage)
+
+            var page = parseInt(page.replace(/[^0-9]/ig,""));
+            var nextPage = (page==4)?1:page+1;
+
             location.href="#page"+nextPage;//正则当前锚点数字，点击链接下一锚点
         })
     }
@@ -121,10 +124,10 @@ $(document).ready(function() {
                 }
             }
             if(nextIndex == 4){
-                arrow.css("display","none")
+                arrow.css("transform","rotate(180deg)")
             }
             if(index == 4){
-                arrow.css("display","block")
+                arrow.css("transform","rotate(0deg)")
             }
             if(index == 1){
                 setTimeout(removeClass,700);
@@ -151,7 +154,7 @@ $(document).ready(function() {
                     animateRemove.call(this, curr);
                     animateAdd.call(this, next);
             }
-        }
+
     });
     //改变颜色
     function colorChange(col){
