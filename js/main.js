@@ -139,7 +139,7 @@ $(document).ready(function() {
             }
             if(nextIndex == 1){
                 addClass();
-                setTimeout(delayFEC2,2000);
+                delayFEC2()
             }
         },
 
