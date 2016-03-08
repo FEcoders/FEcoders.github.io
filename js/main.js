@@ -62,7 +62,8 @@ $(document).ready(function() {
             if(page == ""){
                 page = "#page1"
             }
-            var nextPage = parseInt(page.replace(/[^0-9]/ig,""))+1;
+            var page = parseInt(page.replace(/[^0-9]/ig,""));
+            var nextPage = (page==4)?1:page+1;
             location.href="#page"+nextPage;//正则当前锚点数字，点击链接下一锚点
         })
     }
@@ -101,10 +102,10 @@ $(document).ready(function() {
                 }
             }
             if(nextIndex == 4){
-                arrow.css("display","none")
+                arrow.css("transform","rotate(180deg)")
             }
             if(index == 4){
-                arrow.css("display","block")
+                arrow.css("transform","rotate(0deg)")
             }
             if(index == 1){
                 setTimeout(removeClass,700);
