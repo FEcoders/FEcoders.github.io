@@ -341,3 +341,35 @@ body {
 .section1 .FEC2:hover .FEC2-1{
     color: #ff0000;
 }
+
+
+
+/* section 4
+ * --------------------------------------- */
+
+.readme {
+    width: 80%;
+    height: 80%;
+    margin: 0 auto;   
+    color: #000;
+}
+.readme h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 5rem;
+}
+
+.readme p{
+    text-align: center;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+
+.section4 small {
+    display: block;
+    width: 100%;
+    margin-top: 5%;
+    text-align: center;
+    color: #000;
+}
