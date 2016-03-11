@@ -66,6 +66,8 @@ body {
     color: #FFF;
 }
 
+#social a:hover {color: #000;}
+
 /* section1
  * --------------------------------------- */
 .section1 h1,h2 {
@@ -183,6 +185,11 @@ body {
     text-align: center;
     background-color: rgba(0, 0, 0, 0.31);
 }
+.social a:hover {
+    border-radius: 20%;
+    background-color: #C9384A;
+}
+
 .social a i {margin-top: 3px;}
 
 /*图标展开动画*/
