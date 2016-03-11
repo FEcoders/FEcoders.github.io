@@ -73,7 +73,10 @@ body {
     text-align: center;
 }
 .section1 h1 {font-size: 6rem;}
-.section1 h2 {font-size: 1rem;}
+.section1 h2 {
+    font-size: 1rem;
+    font-family: 'Microsoft YaHei', 微软雅黑, MicrosoftJhengHei, 华文细黑, STHeiti, MingLiu;
+}
 
 /* section2
  * --------------------------------------- */
@@ -81,6 +84,7 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
+    font-family: 'Microsoft YaHei', 微软雅黑, MicrosoftJhengHei, 华文细黑, STHeiti, MingLiu;
 }
 .about img {
     position: absolute;
@@ -171,13 +175,13 @@ body {
 }
 
 .social a {
-    position: absolute;
+    float: left;
     display: block;
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
     text-align: center;
-    background-color: #E22992;
+    background-color: rgba(0, 0, 0, 0.31);
 }
 .social a i {margin-top: 3px;}
 
@@ -374,6 +378,7 @@ body {
 }
 .section4{
     position: relative;
+    font-family: 'Microsoft YaHei', 微软雅黑, MicrosoftJhengHei, 华文细黑, STHeiti, MingLiu;
 }
 .footer{
     position: absolute;
