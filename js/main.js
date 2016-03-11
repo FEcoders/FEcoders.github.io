@@ -128,10 +128,10 @@ $(document).ready(function() {
                 }
             }
             if(nextIndex == 4){
-                arrow.css("transform","rotate(180deg)")
+                arrow.css({"transform":"rotate(180deg)",'opacity':'0.3'})
             }
             if(index == 4){
-                arrow.css("transform","rotate(0deg)")
+                arrow.css({"transform":"rotate(0deg)",'opacity':'1'})
             }
             if(index == 1){
                 setTimeout(removeClass,700);

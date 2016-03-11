@@ -349,7 +349,6 @@ body {
 
 .readme {
     width: 80%;
-    height: 80%;
     margin: 0 auto;   
     color: #000;
 }
@@ -372,4 +371,11 @@ body {
     margin-top: 5%;
     text-align: center;
     color: #000;
+}
+.section4{
+    position: relative;
+}
+.footer{
+    position: absolute;
+    bottom: 10px;
 }
