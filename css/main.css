@@ -199,17 +199,18 @@ body {
 
 @keyframes spread {
     40% {
-        position: relative;
-        float: left;
+
         margin-left: 5rem;
     }
-    100% {   
-        position: relative;
-        float: left;
+    100% { 
         margin-left: 2rem;
     }
 }
-.aAfter {animation: spread 2s ease 0s forwards;}
+.social .aAfter {
+    animation: spread 2s ease 0s forwards;
+    position: relative;
+    float: left;
+}
 
 /* menu
  * --------------------------------------- */
