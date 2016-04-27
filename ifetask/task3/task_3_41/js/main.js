@@ -5,6 +5,7 @@ var calendar= function() {
 		this.startDate = config.startDate;
 		this.endDate = config.endDate;
 		this.wrap = config.wrap;
+		this.callBack = config.callBack;
 		this.year = -1;
 		this.month = -1;
 		this.date = -1;
@@ -64,7 +65,7 @@ var calendar= function() {
 			this.wrap.appendChild(frame);
 
 			//注册监听事件
-			eve.addListener($(".fa-calendar"), "click", function(){
+			eve.addListener($(".icon"), "click", function(){
 				if (frame.style.visibility == "hidden") {
 					frame.style.visibility = "visible";
 				} else {
@@ -173,13 +174,19 @@ var calendar= function() {
 						lis[j].classList.add("selected");
 					}										
 				}
-
 				lis[j].innerHTML = dateArr[j].getDate();
+			}
+			//选择月份最后一天并切换月份时，进行修正
+			if ($(".calendar .days").querySelectorAll(".selected").length === 0) {
+				var currMonth = $(".calendar .days").querySelectorAll(".currMonth");
+				currMonth[currMonth.length - 1].classList.add("selected");
+				this.date = currMonth.length;
 			}
 		},
 		//设定输入框日期
 		_target: function() {
 			this.target.value = this._getDate();
+			this.callBack();
 		},
 		//设定日期
 		_setDate: function(date) {
@@ -200,8 +207,6 @@ var calendar= function() {
 				alert("设置的日期超出范围！");
 				return false;
 			}
-			
-			console.log(newDate);
 			this.year = year;
 			$(".calendarHead").querySelector(".js-year").selectedIndex = year - startDate.getFullYear();
 			$(".calendarHead").querySelector(".js-month").selectedIndex = this.month = newDate.getMonth();
@@ -233,6 +238,9 @@ var calendar1 = calendar.init({
  	wrap: $(".wrap"),
  	startDate: "2000/01/01",
  	endDate: "2020/12/31",
+ 	callBack: function() {
+ 		alert("回调方法！");
+ 	}
  });
 
 /*配置格式
