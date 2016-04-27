@@ -77,7 +77,7 @@ var calendar= function() {
 			eve.addListener(that.target, "keyup", function(){
 				var e = event || window.event,
 					target = e.target || e.srcElement,
-					pattern = /^\d{1,4}\/\d{1,2}\/\d{1,2}$/;
+					pattern = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
 				if (pattern.test(target.value)) {
 					that._setDate(target.value);
 				}
@@ -168,10 +168,10 @@ var calendar= function() {
 					lis[j].classList.remove("selected");
 				}			
 				if (dateArr[j].getFullYear() === this.year && dateArr[j].getMonth() === this.month) {
+					lis[j].classList.add("currMonth");					
 					if (dateArr[j].getDate() === this.date) {
 						lis[j].classList.add("selected");
-					}
-					lis[j].classList.add("currMonth");					
+					}										
 				}
 
 				lis[j].innerHTML = dateArr[j].getDate();
@@ -183,11 +183,7 @@ var calendar= function() {
 		},
 		//设定日期
 		_setDate: function(date) {
-			var pattern = /^\d{1,4}\/\d{1,2}\/\d{1,2}$/;
-			if (!pattern.test(date)) {
-				alert("请输入正确的日期格式");
-				return false;
-			}
+			var pattern = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
 			var newDate = new Date(date);
 			if (isNaN(newDate.getTime())) {
 				return false;
@@ -195,11 +191,16 @@ var calendar= function() {
 			var	year = newDate.getFullYear(),
 				startDate = new Date(this.startDate),
 				endDate = new Date(this.endDate);
+			if (!pattern.test(date)) {
+				alert("请输入正确的日期格式");
+				return false;
+			}
 			if(year < startDate.getFullYear() || 
 				year > endDate.getFullYear()) {
 				alert("设置的日期超出范围！");
 				return false;
 			}
+			
 			console.log(newDate);
 			this.year = year;
 			$(".calendarHead").querySelector(".js-year").selectedIndex = year - startDate.getFullYear();
@@ -236,8 +237,9 @@ var calendar1 = calendar.init({
 
 /*配置格式
  config: {
+ 	target: $(".dateIn"),
  	wrap: $("body"),
  	startDate: "2000/01/01",
  	endDate: "2020/12/31",
- 	}
+ }
 */
