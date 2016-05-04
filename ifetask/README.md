@@ -16,4 +16,5 @@
 - [task_3_38](http://fecoders.github.io/ifetask/task3/task_3_38/task_3_38.html)
 - [task_3_39](http://fecoders.github.io/ifetask/task3/task_3_39/task_3_39.html)
 - [task_3_41](http://fecoders.github.io/ifetask/task3/task_3_41/task_3_41.html)
+- [task_3_42](http://fecoders.github.io/ifetask/task3/task_3_42/task_3_42.html)
 
