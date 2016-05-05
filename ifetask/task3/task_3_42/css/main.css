@@ -4,7 +4,7 @@
 
 .wrap {
 	position: relative;
-	width: 350px;
+	width: 250px;
 	height: 30px;
 	margin: 20px auto;
 	border-radius: 3px;
@@ -22,7 +22,7 @@
 }
 .dateIn {
 	float: right;
-	width: 320px;
+	width: 220px;
 	height: 30px;
 	border: 0;
 	border-radius: 3px;
@@ -33,9 +33,9 @@
 	position: absolute;
 	top: 33px;
 	left: 30px;
-	width: 320px;
-	height: 360px;
-	padding: 10px 18px;
+	width: 220px;
+	height: 280px;
+	padding: 5px 4px;
 	box-sizing: border-box;
 	border: 1px solid #ccc;
 	font-family: "Microsoft YaHei";
@@ -59,40 +59,50 @@
 	border-right: 9px solid transparent;
 	border-bottom: 9px solid #ccc;
 }
+.calendar > div.rangeBtn {
+	width: 100%;
+	height: 20px;
+}
+.calendar > div.rangeBtn > button {
+	width: 60px;
+	height: 20px;
+	margin-right: 5px;
+}
 .calendar > div.calendarHead {
 	width: 100%;
-	height: 30px;
+	height: 20px;
+	margin-bottom: 10px;
 }
 .calendar > div.calendarHead > div.selectDate {
-	width: 200px;
+	width: 80%;
 	margin: 0 auto;
 }
 .calendar > div.calendarHead > div.selectDate > select {
 	height: 20px;
-	width: 80px;
-	margin: 5px 10px;
+	width: 60px;
+	margin: 0px 10px;
 	border-color: #00f;
 }
 .calendar > .calendarHead > span.btn {
 	position: absolute;
 	width: 0;
 	height: 0;
-	border-top: 8px solid transparent;
-	border-bottom: 8px solid transparent;
+	border-top: 6px solid transparent;
+	border-bottom: 6px solid transparent;
 	cursor: pointer;
 }
 .calendar > .calendarHead > span.prev {
-	top: 17px;
-	left: 20px;
-	border-right: 18px solid #00f;
+	top: 10px;
+	left: 8px;
+	border-right: 15px solid #00f;
 }
-.calendar > .calendarHead > span.prev:hover {left: 18px;}
+.calendar > .calendarHead > span.prev:hover {left: 10px;}
 .calendar > .calendarHead > span.next {
-	top: 17px;
-	left: 282px;
-	border-left: 18px solid #00f;
+	top: 10px;
+	left: 195px;
+	border-left: 15px solid #00f;
 }
-.calendar > .calendarHead > span.next:hover {left: 284px;}
+.calendar > .calendarHead > span.next:hover {left: 197px;}
 
 .calendar ul {
 	overflow: hidden;
@@ -102,11 +112,11 @@
 	list-style: none;
 	display: block;
 	box-sizing: border-box;	
-	width: 40px;
-	height: 40px;
+	width: 30px;
+	height: 30px;
 	float: left;
-	font-size: 18px;
-	line-height: 40px;
+	font-size: 12px;
+	line-height: 30px;
 	text-align: center;
 }
 .calendar > .calendarBody > ul.daysOfWeek > li {color: #f00;}
@@ -115,11 +125,14 @@
 	cursor: pointer;
 }
 .calendar .days li.currMonth {
-	border-radius: 5px;
 	color: #000;
 }
-.calendar .days li.currMonth:hover, 
-.calendar .days li.currMonth.selected {
+.calendar .days li.inRange {
+	background-color: #808080;
+	color: #fff;
+}
+.calendar .days li:hover, 
+.calendar .days li.selected {
 	color: #00f;
 	border: 1px solid #00f;
 }

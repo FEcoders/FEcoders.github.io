@@ -1,23 +1,29 @@
-
-var calendar= function() {
+var calendar = function() {
 	function Calendar(config) {
+		this.isRange = config.isRange;
+		this.range = [];
+		this.rangeGap = config.range.gap || [1, 10];
+		this.rangeCallBack = config.range.callBack;
 		this.target = config.target;
-		this.startDate = config.startDate;
-		this.endDate = config.endDate;
 		this.wrap = config.wrap;
 		this.callBack = config.callBack;
+		this.startDate = new Date(config.startDate);
+		this.endDate = new Date(config.endDate);		
 		this.year = -1;
 		this.month = -1;
 		this.date = -1;
-	}
+		this.frame = $create("div");
+		this.fhead = $create("div");
+		this.fbody = $create("div");
+	}	
 	Calendar.prototype = {
-		createCanlendarFrame: function() {		
+		createCalFrame: function() {
 			var that = this,
-				frame = $create("div"),
-				fhead = $create("div"),
-				fbody = $create("div"),
-				startDate = new Date(this.startDate),
-				endDate = new Date(this.endDate),
+				frame = this.frame,
+				fhead = this.fhead,
+				fbody = this.fbody,
+				startDate = this.startDate,
+				endDate = this.endDate,
 				currDate = new Date(Date.now());
 			this.year = currDate.getFullYear();
 			this.month = currDate.getMonth();
@@ -30,8 +36,8 @@ var calendar= function() {
 				var start = startDate.getFullYear(),
 					end = endDate.getFullYear(),
 					years = [],
-					months = ["January", "February", "March", "April", "May", "June", "July", "August",
-							"September", "October", "November", "December"];
+					months = ["Jan", "Feby", "Mar", "Apr", "May", "June", "July", "Aug",
+							"Sep", "Oct", "Nov", "Dec"];
 				var s = start;
 				while (end >= s) {
 					years.push(s);
@@ -62,102 +68,16 @@ var calendar= function() {
 				}
 				return fragment;
 			}
+			if (that.isRange) {
+				var rangeBtn = $create("div");
+				rangeBtn.className = "rangeBtn";
+				rangeBtn.innerHTML = "<button class='confirm'>Confirm</button>" + 
+										"<button class='cancle'>Cancle</button>";
+				frame.appendChild(rangeBtn);
+			}
 			this.wrap.appendChild(frame);
-
-			//注册监听事件
-			eve.addListener($(".icon"), "click", function(){
-				if (frame.style.visibility == "hidden") {
-					frame.style.visibility = "visible";
-				} else {
-					frame.style.visibility = "hidden";
-				}
-			});
-			eve.addListener($(".dateIn"), "focus", function(){
-				frame.style.visibility = "visible";
-			});
-			eve.addListener(that.target, "keyup", function(){
-				var e = event || window.event,
-					target = e.target || e.srcElement,
-					pattern = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
-				if (pattern.test(target.value)) {
-					that._setDate(target.value);
-				}
-			});
-			eve.addListener(fhead.querySelector(".selectDate"), "change", handler);
-			eve.addListener(fhead.querySelector(".prev"), "click", handler);
-			eve.addListener(fhead.querySelector(".next"), "click", handler);
-			eve.addListener(fbody.querySelector(".days"), "click", handler);
-			function handler(event) {
-				var e = event || window.event,
-					target = e.target || e.srcElement;
-				if ($classList.contains(target, "days") || 
-					$classList.contains(target, "none")) {return false;}
-				var lis = fbody.querySelector(".days").querySelectorAll(".currMonth");
-				for (var i = 0, length = lis.length; i < length; i++) {
-					if ($classList.contains(lis[i], "selected")) {
-						$classList.remove(lis[i], "selected");
-					}
-				}
-				if ($classList.contains(target, "day")) {
-					that.date = parseInt(target.innerHTML);
-					$classList.add(target, "selected");
-					if ($classList.contains(target, "prevMonth")) {						
-						btnHandler("prev");
-						that.changeDate();
-					} 
-					if ($classList.contains(target, "nextMonth")) {					
-						btnHandler("next");
-						that.changeDate();
-					}					
-					that._target();	
-					frame.style.visibility = "hidden";//每次选择日期后隐藏日历							
-					return false;
-				}
-				switch (target.className) {
-					case "js-month":
-						that.month = target.selectedIndex;											
-						break;
-					case "js-year":
-						that.year = target.selectedIndex + startDate.getFullYear();
-						break;
-					case "prev btn":
-						btnHandler("prev");
-						break;
-					case "next btn":
-						btnHandler("next");
-						break;
-					default:
-						break;
-				}	
-				that.changeDate();					
-			}		
-			function btnHandler(d) {	
-				if (d === "prev") {
-					if (that.year === startDate.getFullYear() && that.month === 0){
-						return false;
-					}
-					--that.month 
-				}
-				if (d === "next") {
-					if ((that.year === endDate.getFullYear() && that.month === 11)) {
-						return false;
-					}
-					++that.month;
-				}
-				if (that.month < 0) {
-					that.month = 11;
-					--that.year;
-				}
-				if (that.month > 11) {
-					that.month = 0;
-					++that.year;
-				}
-				fhead.querySelector(".js-month").selectedIndex = that.month;
-				fhead.querySelector(".js-year").selectedIndex = that.year - startDate.getFullYear();
-			}				
 		},
-		//日期数据更新
-		changeDate: function() {
+		refreshCal: function() {
 			var	firstDay = new Date(this.year + "/" + (this.month + 1) + "/" + "01").getDay(),
 				dateArr = [];
 			for (var i = 1 - firstDay, count = 42 - firstDay; i <= count; i++) {
@@ -172,15 +92,12 @@ var calendar= function() {
 				if (dateArr[j].getFullYear() === this.year) {
 					if (dateArr[j].getMonth() === this.month) {
 						$classList.add(lis[j], "currMonth");					
-						if (dateArr[j].getDate() === this.date) {
-							$classList.add(lis[j], "selected");
-						}
 					}									
 				}
 				lis[j].innerHTML = dateArr[j].getDate();
 				if (dateArr[j].getMonth() !== this.month) {
 					if (j < firstDay) {
-						if (this.year === new Date (this.startDate).getFullYear() && this.month === 0) {
+						if (this.year === new Date (this.startDate).getFullYear() && this.month === 0) {//日期下限
 							$classList.add(lis[j], "none");
 							lis[j].innerHTML = "";
 							lis[j].style.cursor = "initial";
@@ -188,7 +105,7 @@ var calendar= function() {
 							$classList.add(lis[j], "prevMonth");
 						}						
 					} else {
-						if (this.year === new Date (this.endDate).getFullYear()  && this.month === 11) {
+						if (this.year === new Date (this.endDate).getFullYear()  && this.month === 11) {//日期上限
 							$classList.add(lis[j], "none");							
 							lis[j].innerHTML = "";
 							lis[j].style.cursor = "initial";
@@ -198,28 +115,249 @@ var calendar= function() {
 					}					
 				}				
 			}
-			//选择月份最后一天并切换月份时，进行修正
-			if ($(".calendar .days").querySelectorAll(".selected").length === 0) {
-				var currMonth = $(".calendar .days").querySelectorAll(".currMonth");
-				$classList.add(currMonth[currMonth.length - 1], "selected");
-				this.date = currMonth.length;
+		},
+		addEvent: function() {
+			var that = this,
+				frame = this.frame,
+				fhead = this.fhead,
+				fbody = this.fbody,
+				startDate = this.startDate,
+				endDate = this.endDate;
+			eve.addListener(that.wrap.querySelector(".icon"), "click", function(){
+				if (frame.style.visibility == "hidden") {
+					frame.style.visibility = "visible";
+				} else {
+					frame.style.visibility = "hidden";
+				}
+			});
+			eve.addListener(that.target, "focus", function(){
+				frame.style.visibility = "visible";
+			});
+			eve.addListener(that.target, "keyup", function(){
+				var e = event || window.event,
+					target = e.target || e.srcElement,
+					pattern = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
+				if (pattern.test(target.value)) {
+					that.setDate(target.value);
+				}
+			});
+			eve.addListener(fhead.querySelector(".selectDate"), "change", handler);
+			eve.addListener(fhead.querySelector(".prev"), "click", handler);
+			eve.addListener(fhead.querySelector(".next"), "click", handler);			
+			function handler(event) {
+				var e = event || window.event,
+					target = e.target || e.srcElement;
+				switch (target.className) {
+					case "js-month":
+						that.month = target.selectedIndex;											
+						break;
+					case "js-year":
+						that.year = target.selectedIndex + startDate.getFullYear();
+						break;
+					case "prev btn":
+						that.switchMonth("prev");
+						break;
+					case "next btn":
+						that.switchMonth("next");
+						break;
+					default:
+						break;
+				}	
+				that.refreshCal();//刷新日期数据
+				that.changeDate();				
+			}	
+			//下部按钮事件
+			if (frame.querySelector(".rangeBtn") !== null) {
+				eve.addListener(frame.querySelector(".rangeBtn"), "click", rangeHandler);
+				function rangeHandler(event) {
+					var e = event || window.event,
+					target = e.target || e.srcElement;
+					if (target.className === "confirm") {
+						that.output("From " + that.range[0] + " To " + that.range[1]);
+						frame.style.visibility = "hidden";
+					}
+					that.range.splice(0, 2);
+					var lis = fbody.querySelectorAll(".day");
+					for (var i = 0, length = lis.length; i < length; i++) {
+						if ($classList.contains(lis[i], "selected")) {
+							$classList.remove(lis[i], "selected");
+						}
+						if ($classList.contains(lis[i], "inRange")) {
+							$classList.remove(lis[i], "inRange");
+						}
+					}	
+					
+				}
+			}	
+		},
+		switchMonth: function(d) {	
+			if (d === "prev") {
+				if (this.year === this.startDate.getFullYear() && this.month === 0){
+					return false;
+				}
+				--this.month 
 			}
+			if (d === "next") {
+				if ((this.year === this.endDate.getFullYear() && this.month === 11)) {
+					return false;
+				}
+				++this.month;
+			}
+			if (this.month < 0) {
+				this.month = 11;
+				--this.year;
+			}
+			if (this.month > 11) {
+				this.month = 0;
+				++this.year;
+			}
+			this.fhead.querySelector(".js-month").selectedIndex = this.month;
+			this.fhead.querySelector(".js-year").selectedIndex = this.year - this.startDate.getFullYear();
 		},
-		//设定输入框日期
-		_target: function() {
-			this.target.value = this._getDate();
-			this.callBack();
+		selectDate: function() {
+			var that = this,
+				frame = this.frame,
+				fhead = this.fhead,
+				fbody = this.fbody;
+			eve.addListener(fbody.querySelector(".days"), "click", handler);
+			function handler(event) {
+				var e = event || window.event,
+					target = e.target || e.srcElement;
+				if ($classList.contains(target, "days") || //消除边框的错误点击事件
+						$classList.contains(target, "none")) {return false;}
+				that.isRange?rangeDateHandler() : oneDateHandler();
+				function oneDateHandler() {
+					var lis = fbody.querySelector(".days").querySelectorAll(".currMonth");
+					for (var i = 0, length = lis.length; i < length; i++) {
+						if ($classList.contains(lis[i], "selected")) {
+							$classList.remove(lis[i], "selected");
+						}
+					}
+					if ($classList.contains(target, "day")) {
+						that.date = parseInt(target.innerHTML);
+						$classList.add(target, "selected");
+						if ($classList.contains(target, "prevMonth")) {						
+							that.switchMonth("prev");
+							that.refreshCal();
+							that.changeDate();
+						} 
+						if ($classList.contains(target, "nextMonth")) {					
+							that.switchMonth("next");
+							that.refreshCal();
+							that.changeDate();
+						}					
+						that.output(that.getDate());	
+						frame.style.visibility = "hidden";//每次选择日期后隐藏日历							
+					}
+				}
+				function rangeDateHandler() {					
+					var range =that.range;				
+					if (!$classList.contains(target, "day")) {return false;}
+					that.date = parseInt(target.innerHTML);
+					var m = that.month;
+					if ($classList.contains(target, "prevMonth")) {
+						--m;
+					}
+					if ($classList.contains(target, "nextMonth")) {
+						++m;
+					}	
+					var currDate = that.getDate({month: m});
+					switch (range.length) {
+						case 1:
+						if (!isInGap(0)) {return false;}//是否在允许间隔内
+						if (range[0] > currDate) {//日期在前的为数组第一个元素
+							range.unshift(currDate);
+						} else {
+							range.push(currDate);
+						}
+						that.markDate();
+						break;
+						case 2:	
+						var lis = fbody.querySelectorAll(".day");
+						for (var i = 0, length = lis.length; i < length; i++) {
+							if ($classList.contains(lis[i], "selected")) {
+								$classList.remove(lis[i], "selected");
+							}
+							if ($classList.contains(lis[i], "inRange")) {
+								$classList.remove(lis[i], "inRange");
+							}
+						}						
+						range.splice(0, 2, currDate);//清除已选
+						break;
+						default: 
+						range.push(currDate);						
+					}	
+					if (!$classList.contains(target, "selected")) {
+						$classList.add(target, "selected");
+					}															
+					function isInGap(x) {
+						var interval = Math.abs(new Date(currDate).getTime() - 
+							new Date(range[x]).getTime()) / (1000 * 60 * 60 * 24);
+						if (interval < that.rangeGap[0] || interval > that.rangeGap[1]) {
+							alert("时间间隔应大于" + that.rangeGap[0] + "天,小于" + that.rangeGap[1] + "天.");
+							return false;
+						}
+						return true;
+					}	
+				}						
+			}			
 		},
-		//设定日期
-		_setDate: function(date) {
+		markDate: function() {
+				var that = this,
+					range = that.range,
+					lis = this.fbody.querySelectorAll(".day");
+				for (var i = 0, length = lis.length; i < length; i++) {
+					if ($classList.contains(lis[i], "inRange")) {
+						$classList.remove(lis[i], "inRange");
+					}
+					var m = that.month, d = parseInt(lis[i].innerHTML), currDate;
+					if ($classList.contains(lis[i], "prevMonth")) {
+						--m;
+					}
+					if($classList.contains(lis[i], "nextMonth")) {
+						++m;
+					}
+					currDate = that.getDate({month: m, date: d});											
+					if (currDate > range[0] && currDate < range[1]) {
+						$classList.add(lis[i], "inRange");
+					}
+					if ((currDate === range[0] || currDate === range[1]) && 
+						!$classList.contains(lis[i], "selected")) {
+						$classList.add(lis[i], "selected");
+					}					
+				}
+			},	
+		changeDate: function() {
+			var that = this,
+				frame = this.frame,
+				fhead = this.fhead,
+				fbody = this.fbody;
+			if (this.isRange) {
+				that.markDate();
+			} else {
+				var lis = fbody.querySelector(".days").querySelectorAll(".currMonth");
+				for (var i = 0, length = lis.length; i < length; i++) {
+					if (parseInt(lis[i].innerHTML) === this.date) {
+						$classList.add(lis[i], "selected");
+					}
+				}			
+				//选择月份最后一天并切换月份时，进行修正
+				if ($(".calendar .days").querySelectorAll(".selected").length === 0) {
+					var currMonth = $(".calendar .days").querySelectorAll(".currMonth");
+					$classList.add(currMonth[currMonth.length - 1], "selected");
+					this.date = currMonth.length;
+				}
+			}			
+		},
+		setDate: function(date) {
 			var pattern = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
 			var newDate = new Date(date);
 			if (isNaN(newDate.getTime())) {
 				return false;
 			}
 			var	year = newDate.getFullYear(),
-				startDate = new Date(this.startDate),
-				endDate = new Date(this.endDate);
+				startDate = this.startDate,
+				endDate = this.endDate;
 			if (!pattern.test(date)) {
 				alert("请输入正确的日期格式");
 				return false;
@@ -233,43 +371,60 @@ var calendar= function() {
 			$(".calendarHead").querySelector(".js-year").selectedIndex = year - startDate.getFullYear();
 			$(".calendarHead").querySelector(".js-month").selectedIndex = this.month = newDate.getMonth();
 			this.date = newDate.getDate();
-			this.changeDate();
+			this.refreshCal();
 		},
-		//获取日期
-		_getDate: function() {
-			var date = this.year + "/" + (this.month + 1) + "/" + this.date;
-			return date;
+		output: function(info) {
+			this.target.value = info;
+			this.callBack(info);
+		},
+		getDate: function(date) {
+			if (date === undefined) {date = {};}
+			var y = date.year || this.year,
+				m = date.month || this.month,
+				d = date.date || this.date;
+			if (m < 10) {
+				m = "0" + (m + 1);
+			} else {
+				m = m + 1;
+			}
+			if (d < 10) {
+				d = "0" + d;
+			}
+			var currDate = y + "/" + m + "/" + d;
+			return currDate;
+		},
+		init: function() {
+			this.createCalFrame();
+			this.refreshCal();
+			this.addEvent();
+			this.selectDate();
 		}
 	};
-	return {
-		init: function(config) {
-			var newCalendar = new Calendar(config);
-			newCalendar.createCanlendarFrame();
-			newCalendar.changeDate();
-			return {
-				setDate: newCalendar._setDate.bind(newCalendar),
-				getDate: newCalendar._getDate.bind(newCalendar)
-			}
+
+	function init(config) {
+		var c = new Calendar(config);
+		c.init();
+		return {
+			setDate: c.setDate,
+			getDate: c.getDate
 		}
 	}
+	return init;
 }();
 
+var c = calendar({
+		target: $(".dateIn"),
+	 	wrap: $(".wrap"),
+	 	startDate: "2000/01/01",
+	 	endDate: "2020/12/31",
+	 	isRange: true,
+	 	range: {
+	 		gap: [1, 20],
+	 		callBack: function() {
 
-var calendar1 = calendar.init({
-	target: $(".dateIn"),
- 	wrap: $(".wrap"),
- 	startDate: "2000/01/01",
- 	endDate: "2020/12/31",
- 	callBack: function() {
- 		alert("回调方法！");
- 	}
- });
-
-/*配置格式
- config: {
- 	target: $(".dateIn"),
- 	wrap: $("body"),
- 	startDate: "2000/01/01",
- 	endDate: "2020/12/31",
- }
-*/
+	 		}
+	 	},
+	 	callBack: function(date) {
+	 		alert(date);
+	 	}
+ 	});
